@@ -244,5 +244,4 @@ Add your project license here.
 ## Author
 
 Ashutosh Biswal
-mail me: bashutosh017@gmail.com#   N e t r a - A - A u t o m a t e d - S m a r t - T r a f f i c - L a n e - A c c i d e n t - M o n i t o r i n g - S y s t e m  
- 
+mail me: bashutosh017@gmail.com#
