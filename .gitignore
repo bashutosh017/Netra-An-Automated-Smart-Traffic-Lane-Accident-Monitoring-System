@@ -1,0 +1,7 @@
+# Byte-compiled / Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Visual Studio Code settings and workspace configurations
+.vscode/
