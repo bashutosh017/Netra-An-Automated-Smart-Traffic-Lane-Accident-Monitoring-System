@@ -36,4 +36,35 @@ def suggest_lane_line(referance_frame,road_polygon):
     blur=cv2.GaussianBlur(gray,(5,5),0)
     # edge detector
     edge=cv2.Canny(blur,50,150)
+    mask=np.zeros_like(edge)
+    road=np.array(road_polygon,dtype=np.int32)
+    cv2.fillPoly(mask,[road],255)
+    road_edge=cv2.bitwise_and(edge,mask)
+
+    lines=cv2.HoughLinesP(road_edge,1,np.pi/180,50,minLineLength=40,maxLineGap=20)
+
+    candidates=[]
+    if lines is None:
+        return candidates
+    for line in lines:
+        x1,y1,x2,y2=line[0]
+        angle=abs(np.degrees(np.arctan2(y2-y1,x2-x1)))
+        if 20<angle<160:
+            candidates.append((x1,y1,x2,y2))
+    return candidates
+
+def draw_lanes(frame,lanes,counting_line):
+    for lane in lanes:
+        pts=np.array(lane.polygon,dtype=np.int32)
+
+        cv2.___12___=(frame,[pts],True,(0,255,0),2)
+        x,y=lane.polygon[0]
+
+        cv2.__13__(frame,f"Lane {lane.lane_id}",(int(x),int(y)),
+                   cv2.FONT_HERSHEY_SIMPLEX,0.7,(255,255,255),2)
+
+    (x1,y1),(x2,y2)=counting_line
+    cv2.__14__(frame,(int(x1),(int(y1))),(int(x2)),(int(y2)),
+               (0,0,255),2)
+    return frame
     
