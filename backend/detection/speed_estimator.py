@@ -26,4 +26,20 @@ def estimate_Speed(points,fps,transform):
     if len(points)<MIN_POINTS:
         return None
 
-    
+    x1,y1,frame1=points[0]
+    x2,y2,frame2=points[-1]
+
+    start=to_Road_meters((x1,y1),transform)
+    end=to_Road_meters((x2,y2),transform)
+
+    dist_m=np.linalg.norm(end-start)
+
+    seconds=(frame2-frame2)/fps
+
+    if seconds<=0:
+        return None
+
+    speed_mps=dist_m/seconds
+    return speed_mps*1000
+
+def SmoothSpeed(track_id,speed): 
