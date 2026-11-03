@@ -1,11 +1,29 @@
-IN_POINTS = 5        # history points needed before we trust a speed
-SMOOTHING = 7         # how many recent speeds we take the middle value of
-SLOW_SPEED = 5        # km/h: below this, traffic counts as "crawling"
-MIN_VEHICLES = 8      # vehicles needed in a lane for gridlock
-MIN_DURATION = 30     # seconds the lane must stay slow before gridlock is declared
- 
-# ---------------------------------------------------------------- MEMORY
-recent_speeds = defaultdict(lambda: deque(___7___=SMOOTHING))   # HINT 7: the deque size-limit argument you learned in vehicle_tracker
-gridlock_since = {}                                              # lane_id -> time the slow period started
- 
- 
+import cv2
+from collections import deque,defaultdict
+import numpy as np
+
+MIN_POINTS=5
+SMOOTHING=7
+SLOW_SPEED=5
+MIN_VEHICLES=8
+MIN_DURATION=30
+
+
+recent_speed=defaultdict(lambda:deque(maxlen=SMOOTHING))
+gridlock_since={}
+
+def build_transform(image_points,real_points):
+    src=np.array(image_points,dtype=np.float32)
+    dst=np.array(real_points,dtype=np.float32)
+    return cv2.getPerspectiveTransform(src,dst)
+
+def to_Road_meters(point,transform):
+    p=np.array([[point]],dtype=np.float32)
+    result=cv2.perspectiveTransform(p,transform)
+    return result[0][0]
+
+def estimate_Speed(points,fps,transform):
+    if len(points)<MIN_POINTS:
+        return None
+
+    
