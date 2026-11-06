@@ -48,4 +48,19 @@ def SmoothSpeed(track_id,speed):
     recent_speed[track_id].append(speed)
     return np.median(recent_speed[track_id])
 
+def CheckGridlock(lane_id,speeds,now_time):
+    known=[s for s in speeds if s is not None]
+
+    if len(known)>=MIN_VEHICLES and np.mean(known):
+        if lane_id not in gridlock_since:
+            gridlock_since[lane_id]=now_time
+        elif now_time-gridlock_since[lane_id]>=MIN_DURATION:
+            return{
+                "type":"gridlock",
+                "serverity":"",
+                "lane_id":lane_id,
+            }
+        else:
+            gridlock_since.pop(lane_id,None)
+
 
