@@ -42,4 +42,10 @@ def estimate_Speed(points,fps,transform):
     speed_mps=dist_m/seconds
     return speed_mps*1000
 
-def SmoothSpeed(track_id,speed): 
+def SmoothSpeed(track_id,speed):
+    if speed is None:
+        return None
+    recent_speed[track_id].append(speed)
+    return np.median(recent_speed[track_id])
+
+
