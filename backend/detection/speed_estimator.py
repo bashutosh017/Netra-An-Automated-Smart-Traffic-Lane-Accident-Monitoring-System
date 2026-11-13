@@ -57,7 +57,7 @@ def CheckGridlock(lane_id,speeds,now_time):
         elif now_time-gridlock_since[lane_id]>=MIN_DURATION:
             return{
                 "type":"gridlock",
-                "serverity":"",
+                "serverity":"Warning!",
                 "lane_id":lane_id,
             }
         else:
